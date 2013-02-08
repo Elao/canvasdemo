@@ -18,12 +18,7 @@ function Logo()
 
     this.draw = function ()
     {
-        this.canvas.context.save();
-        this.canvas.context.translate(this.centerX, this.centerY);
-        this.canvas.context.rotate(- this.canvas.windX * (Math.PI / 360) );
-        this.canvas.context.translate(-this.centerX, -this.centerY);
         this.canvas.context.drawImage(this.image, this.X, this.Y);
-        this.canvas.context.restore();
     }
 
     var logo = this;
