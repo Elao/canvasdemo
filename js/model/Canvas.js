@@ -1,81 +1,102 @@
 function Canvas(id)
 {
-    Ball.prototype.canvas = this;
-    Rope.prototype.canvas = this;
+    Logo.prototype.canvas = this;
+    Cube.prototype.canvas = this;
 
-    Ball.prototype.radius = 30;
-    Ball.prototype.forces = [ new Force(0, 0, 0, Ball.prototype.radius, true) ]; //Gravity
-    Rope.prototype.length = 200;
+    Cube.prototype.wind = new Force(0, 0, true);
 
     this.draw = function()
     {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        for (var i = this.balls.length - 1; i >= 0; i--)
+        for (var p = 0; p < this.cubes.length; p++)
         {
-            this.balls[i].draw();
+            for (var i = this.cubes[p].length - 1; i >= 0; i--)
+            {
+                this.cubes[p][i].draw();
+            }
+
+            if(p == 4)
+            {
+                this.logo.draw();
+            }
         }
     }
 
     this.update = function ()
     {
-        var change = false;
-
-        for (var i = this.balls.length - 1; i >= 0; i--)
+        if(this.total != this.amount)
         {
-            change = this.balls[i].update() || change;
+            this.addCube(this.amount);
         }
 
-        if(change)
+        for (var p = 0; p < this.cubes.length; p++)
         {
-            this.draw();
+            for (var i = this.cubes[p].length - 1; i >= 0; i--)
+            {
+                this.cubes[p][i].update();
+            }
         }
+
+        this.draw();
     }
 
     this.resizeHandler = function(x, y)
     {
         this.canvas.width = x;
         this.canvas.height = y;
-        this.placeBalls();
+        this.logo.resizeHandler();
+        this.draw();
     }
 
     this.mouseHandler = function(e)
     {
         this.mouseX = e.clientX;
         this.mouseY = e.clientY;
-    }
 
-    this.addBall = function (total)
-    {
-        this.balls = [];
+        switch (e.type)
+        {
 
-        for (var i = 0; i < total; i++) {
-            this.balls[i] = new Ball(0, 0);
-        }
+            case 'mousemove':
+                var middle = (this.canvas.width / 2);
+                var X = ((this.mouseX - middle) / middle) * 10;
 
-        this.placeBalls();
-    }
+                Cube.prototype.wind.setX(X);
+            break;
+            /*case 'mousedown':
 
-    this.placeBalls = function()
-    {
-        var total = this.balls.length;
+            break;
+            case 'mouseup':
 
-        if(total == 0){ return false; }
-
-        var pendulumWidth = Ball.prototype.radius * 2 * total;
-        var startLeft = (this.canvas.width - pendulumWidth) / 2;
-        var y = this.canvas.height / 2;
-
-        for (var i = total - 1; i >= 0; i--) {
-            var x = startLeft + i * (Ball.prototype.radius * 2);
-            this.balls[i].setPosition(x, y);
+            break;*/
         }
     }
 
-    this.balls = [];
+    this.addCube = function (total)
+    {
+        this.cubes = [];
+        this.total = total;
+
+        for (var p = 9; p >= 0; p--) {
+            this.cubes[p] = [];
+        }
+
+        for (var i = 0; i < this.total; i++) {
+            var plan = Math.floor( Math.random() * 10 );
+            var length = this.cubes[plan].length;
+            this.cubes[plan][length] = new Cube(plan);
+        }
+    }
+
+    this.amount = 50;
+    this.total = 0;
+    this.cubes = [];
     this.canvas = document.getElementById(id);
     this.context = this.canvas.getContext('2d');
+    this.logo = new Logo();
 
     var canvas = this;
     addEvent(this.canvas, 'mousemove', function(e){ canvas.mouseHandler(e); });
+    //addEvent(this.canvas, 'mousedown', function(e){ canvas.mouseHandler(e); });
+    //addEvent(this.canvas, 'mouseup', function(e){ canvas.mouseHandler(e); });
 }

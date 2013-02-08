@@ -27,16 +27,11 @@ window.onload = function() {
 
     document.body.appendChild( stats.domElement );
 
-    /*gui.add(text, 'message');
-    gui.add(text, 'speed', -5, 5);
-    gui.add(text, 'displayOutline');
-    gui.add(text, 'explode');*/
-
     canvas = new Canvas('newtonpendulum');
 
-    resizeHandler();
+    gui.add(canvas, 'amount', 0, 100);
 
-    canvas.addBall(5);
+    resizeHandler();
 
     animloop();
 }

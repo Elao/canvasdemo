@@ -1,8 +1,16 @@
-function Force(startX, startY, stopX, stopY, constant)
+function Force(x, y, constant)
 {
+    this.setX = function(x)
+    {
+        this.X = x;
+    }
+
+    this.setY = function(y)
+    {
+        this.Y = y;
+    }
+
     this.constant = constant;
-    this.startX = startX;
-    this.startY = startY;
-    this.signX = startX < stopX ? 1 : -1;
-    this.signY = startY < stopY ? 1 : -1;
+    this.X = x;
+    this.Y = y;
 }

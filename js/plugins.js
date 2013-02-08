@@ -53,3 +53,15 @@
             clearTimeout(id);
         };
 }());
+
+function addEvent(obj, e, fn)
+{
+    if(window.addEventListener)
+    {
+        obj.addEventListener(e, fn, false);
+    }
+    else if(window.attachEvent)
+    {
+        obj.attachEvent(e, fn, false);
+    }
+}
