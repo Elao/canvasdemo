@@ -4,6 +4,8 @@ function Cube(plan)
     {
         this.currentX = x;
         this.currentY = y;
+        this.centerX = this.currentX + (this.width / 2);
+        this.centerY = this.currentY + (this.width / 2);
     }
 
     this.setColor = function (color)
@@ -13,10 +15,20 @@ function Cube(plan)
 
     this.draw = function ()
     {
+        this.canvas.context.save();
         this.canvas.context.beginPath();
+
+        if(this.canvas.windX != 0)
+        {
+            this.canvas.context.translate(this.centerX, this.centerY);
+            this.canvas.context.rotate(- this.canvas.windX * (Math.PI / 180) );
+            this.canvas.context.translate(-this.centerX, -this.centerY);
+        }
+
         this.canvas.context.rect(this.currentX, this.currentY, this.width, this.width);
         this.canvas.context.fillStyle = this.color;
         this.canvas.context.fill();
+        this.canvas.context.restore();
     }
 
     this.update = function ()

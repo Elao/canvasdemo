@@ -58,10 +58,10 @@ function Canvas(id)
         {
 
             case 'mousemove':
-                var middle = (this.canvas.width / 2);
-                var X = ((this.mouseX - middle) / middle) * 10;
+                var middle = this.canvas.width / 2;
+                this.windX = ((this.mouseX - middle) / middle) * 10;
 
-                Cube.prototype.wind.setX(X);
+                Cube.prototype.wind.setX(this.windX);
             break;
             /*case 'mousedown':
 
